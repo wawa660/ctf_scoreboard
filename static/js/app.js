@@ -312,8 +312,68 @@ async function loadAdminPanel() {
             `;
             list.appendChild(item);
         });
+
+        loadAdminUsers(); // Load users as well
     } catch (e) {
         list.innerHTML = 'Error loading challenges';
+    }
+}
+
+async function loadAdminUsers() {
+    const list = document.getElementById('admin-users-list');
+    list.innerHTML = 'Loading...';
+
+    try {
+        const res = await fetch(`${API_URL}/users`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const users = await res.json();
+
+        list.innerHTML = '';
+        if (users.length === 0) {
+            list.innerHTML = 'No users found.';
+            return;
+        }
+
+        users.forEach(u => {
+            const item = document.createElement('div');
+            item.className = 'panel flex justify-between items-center';
+            item.style.padding = '0.5rem 1rem';
+            item.style.marginBottom = '0.5rem';
+
+            // Prevent delete button for current user if known, or just rely on backend
+            // Ideally we check u.id vs currentUser.id
+            const canDelete = currentUser && currentUser.id !== u.id;
+
+            item.innerHTML = `
+                <span>${u.username} ${u.is_admin ? '<small>[ADMIN]</small>' : ''}</span>
+                ${canDelete ? `<button class="btn btn-danger" onclick="deleteUser(${u.id})">Delete</button>` : '<span style="opacity:0.5">[Self]</span>'}
+            `;
+            list.appendChild(item);
+        });
+    } catch (e) {
+        list.innerHTML = 'Error loading users';
+    }
+}
+
+async function deleteUser(id) {
+    if (!confirm('Are you sure you want to delete this user? This cannot be undone.')) return;
+
+    try {
+        const res = await fetch(`${API_URL}/users/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (res.ok) {
+            showNotification('User Deleted');
+            loadAdminUsers();
+        } else {
+            const data = await res.json();
+            showNotification(data.detail || 'Delete failed', 'error');
+        }
+    } catch (e) {
+        showNotification('Error deleting user', 'error');
     }
 }
 
