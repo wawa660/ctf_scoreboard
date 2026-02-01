@@ -2,15 +2,17 @@
 :root {
   --bg-color: #0d0d0d;
   --text-color: #e0e0e0;
-  --accent-color: #00ff41; /* Hacker Green */
-  --secondary-accent: #00b8ff; /* Cyan */
+  --accent-color: #00ff41;
+  /* Hacker Green */
+  --secondary-accent: #00b8ff;
+  /* Cyan */
   --error-color: #ff3333;
   --panel-bg: #1a1a1a;
   --font-mono: 'Fira Code', 'Courier New', monospace;
 }
 
 * {
-  box_sizing: border-box;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -26,7 +28,9 @@ body {
 }
 
 /* Typography */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: var(--accent-color);
   margin-bottom: 1rem;
   text-transform: uppercase;
@@ -61,6 +65,11 @@ nav ul {
   display: flex;
   list-style: none;
   gap: 1.5rem;
+}
+
+#nav-toggle {
+  display: none;
+  /* Hidden on desktop */
 }
 
 main {
@@ -106,7 +115,8 @@ footer {
   color: white;
 }
 
-input, textarea {
+input,
+textarea {
   background: var(--panel-bg);
   border: 1px solid #333;
   color: var(--text-color);
@@ -116,7 +126,8 @@ input, textarea {
   margin-bottom: 1rem;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   outline: none;
   border-color: var(--accent-color);
 }
@@ -133,8 +144,8 @@ input:focus, textarea:focus {
 }
 
 .challenge-card.solved {
-    border-left-color: var(--secondary-accent);
-    opacity: 0.7;
+  border-left-color: var(--secondary-accent);
+  opacity: 0.7;
 }
 
 .scoreboard-table {
@@ -142,7 +153,8 @@ input:focus, textarea:focus {
   border-collapse: collapse;
 }
 
-.scoreboard-table th, .scoreboard-table td {
+.scoreboard-table th,
+.scoreboard-table td {
   text-align: left;
   padding: 0.75rem;
   border-bottom: 1px solid #333;
@@ -161,11 +173,26 @@ input:focus, textarea:focus {
   position: relative;
 }
 
-.text-center { text-align: center; }
-.mb-1 { margin-bottom: 1rem; }
-.flex { display: flex; gap: 1rem; }
-.justify-between { justify-content: space-between; }
-.items-center { align-items: center; }
+.text-center {
+  text-align: center;
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.flex {
+  display: flex;
+  gap: 1rem;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-center {
+  align-items: center;
+}
 
 /* Views */
 #auth-view {
@@ -174,24 +201,261 @@ input:focus, textarea:focus {
 }
 
 #notification-area {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    z-index: 100;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
 }
+
 .notification {
-    background: var(--panel-bg);
-    border: 1px solid var(--accent-color);
-    padding: 1rem;
-    margin-bottom: 0.5rem;
-    animation: slideIn 0.3s ease-out;
+  background: var(--panel-bg);
+  border: 1px solid var(--accent-color);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  animation: slideIn 0.3s ease-out;
 }
+
 .notification.error {
-    border-color: var(--error-color);
-    color: var(--error-color);
+  border-color: var(--error-color);
+  color: var(--error-color);
 }
 
 @keyframes slideIn {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+
+  /* Global Adjustments */
+  body {
+    font-size: 14px;
+    /* Slightly smaller base font */
+  }
+
+  /* Header & Nav */
+  header {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid var(--accent-color);
+    position: relative;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    width: auto;
+    margin-bottom: 0;
+  }
+
+  #nav-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+  }
+
+  #nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: var(--accent-color);
+    transition: all 0.3s ease;
+  }
+
+  /* Animate Hamburger */
+  .nav-open #nav-toggle span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+  }
+
+  .nav-open #nav-toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-open #nav-toggle span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+
+  nav {
+    display: none;
+    /* Hidden by default on mobile */
+    width: 100%;
+    margin-top: 1rem;
+    order: 3;
+  }
+
+  nav.mobile-open {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  nav ul {
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    gap: 0.8rem;
+  }
+
+  nav ul li {
+    width: 100%;
+  }
+
+  nav ul li a {
+    display: block;
+    padding: 0.8rem;
+    background: rgba(0, 255, 65, 0.05);
+    /* Subtle green tint */
+    border: 1px solid var(--accent-color);
+    text-align: center;
+    width: 100%;
+    transition: all 0.2s ease;
+    font-weight: bold;
+  }
+
+  nav ul li a:hover,
+  nav ul li a:active {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    text-decoration: none;
+    box-shadow: 0 0 10px var(--accent-color);
+  }
+
+  /* Main Content */
+  main {
+    padding: 1rem;
+    /* reduced padding */
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    text-align: center;
+    border-bottom: 1px dashed var(--accent-color);
+    padding-bottom: 0.5rem;
+  }
+
+  /* Challenge Cards */
+  .challenge-card {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .challenge-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .challenge-card .points {
+    align-self: flex-start;
+    background: var(--panel-bg);
+    border: 1px solid var(--accent-color);
+    padding: 0.2rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .challenge-card .flex {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  /* Form Elements in Cards */
+  .flag-form {
+    margin-top: 1rem;
+  }
+
+  .challenge-card input {
+    margin-bottom: 0.8rem !important;
+    padding: 0.8rem;
+    font-size: 1rem;
+  }
+
+  .challenge-card .btn {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  /* Auth View */
+  #auth-view {
+    margin: 1rem auto;
+    padding: 1rem;
+    width: 100%;
+    max-width: 100%;
+    border: none;
+    background: transparent;
+  }
+
+  #auth-view .panel {
+    padding: 1.5rem 1rem;
+  }
+
+  #auth-view .flex {
+    /* Login/Register toggle */
+    flex-direction: row;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  #auth-view .btn {
+    flex: 1;
+    font-size: 0.9rem;
+  }
+
+  /* Tables */
+  .scoreboard-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
+  }
+
+  .scoreboard-table th,
+  .scoreboard-table td {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  /* Hacker Tools List */
+  #tools-view ul li {
+    width: 100%;
+  }
+
+  #tools-view .btn {
+    width: 100%;
+    display: block;
+    padding: 1rem;
+    margin: 0.5rem 0;
+  }
 }

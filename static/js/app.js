@@ -20,14 +20,42 @@ document.getElementById('logout-btn').addEventListener('click', (e) => {
     e.preventDefault();
     logout();
 });
+logout();
+});
 
-function showView(viewId) {
-    views.forEach(view => view.classList.add('hidden'));
-    document.getElementById(`${viewId}-view`).classList.remove('hidden');
+// Mobile Nav Toggle
+const navToggle = document.getElementById('nav-toggle');
+if (navToggle) {
+    navToggle.addEventListener('click', (e) => {
+        // Prevent default might not be strictly necessary for a button, but good practice
+        e.stopPropagation();
+        navMenu.classList.toggle('mobile-open');
+        document.body.classList.toggle('nav-open'); // For burger animation
+    });
 
-    if (viewId === 'challenges') loadChallenges();
-    if (viewId === 'scoreboard') loadScoreboard();
-    if (viewId === 'admin') loadAdminPanel();
+    // Close nav when clicking a link
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('mobile-open');
+            document.body.classList.remove('nav-open');
+        });
+    });
+
+    // Close nav when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('nav') && !e.target.closest('#nav-toggle') && navMenu.classList.contains('mobile-open')) {
+            navMenu.classList.remove('mobile-open');
+            document.body.classList.remove('nav-open');
+        }
+    });
+}
+
+views.forEach(view => view.classList.add('hidden'));
+document.getElementById(`${viewId}-view`).classList.remove('hidden');
+
+if (viewId === 'challenges') loadChallenges();
+if (viewId === 'scoreboard') loadScoreboard();
+if (viewId === 'admin') loadAdminPanel();
 }
 
 function showNotification(message, type = 'success') {
