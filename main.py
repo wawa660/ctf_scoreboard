@@ -7,12 +7,18 @@ from sqlalchemy import func, desc
 from typing import List
 import models, schemas, auth
 from database import engine, get_db
+import os
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="CTF Scoreboard", description="A simple CTF Scoreboard")
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# Get absolute path to the directory where this script is located
+script_dir = os.path.dirname(os.path.abspath(__file__))
+static_path = os.path.join(script_dir, "static")
+templates_path = os.path.join(script_dir, "templates")
+
+app.mount("/static", StaticFiles(directory=static_path), name="static")
 
 @app.post("/token", response_model=schemas.Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
@@ -121,5 +127,5 @@ async def get_scoreboard(db: Session = Depends(get_db)):
 
 @app.get("/")
 async def read_index():
-    return FileResponse('templates/index.html')
+    return FileResponse(os.path.join(templates_path, 'index.html'))
 
