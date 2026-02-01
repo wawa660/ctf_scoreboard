@@ -20,8 +20,7 @@ document.getElementById('logout-btn').addEventListener('click', (e) => {
     e.preventDefault();
     logout();
 });
-logout();
-});
+
 
 // Mobile Nav Toggle
 const navToggle = document.getElementById('nav-toggle');
@@ -50,12 +49,14 @@ if (navToggle) {
     });
 }
 
-views.forEach(view => view.classList.add('hidden'));
-document.getElementById(`${viewId}-view`).classList.remove('hidden');
 
-if (viewId === 'challenges') loadChallenges();
-if (viewId === 'scoreboard') loadScoreboard();
-if (viewId === 'admin') loadAdminPanel();
+function showView(viewId) {
+    views.forEach(view => view.classList.add('hidden'));
+    document.getElementById(`${viewId}-view`).classList.remove('hidden');
+
+    if (viewId === 'challenges') loadChallenges();
+    if (viewId === 'scoreboard') loadScoreboard();
+    if (viewId === 'admin') loadAdminPanel();
 }
 
 function showNotification(message, type = 'success') {
